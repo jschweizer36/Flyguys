@@ -5,6 +5,7 @@ Created on Oct 23, 2014
 This function will be used to gather important information about each employee
 We will be gathering each employees names (first and last), NTID, and their empolyee ID
 This function will also get and set the threat of each of the employees
+Just a test
 '''
 
 class Employee:
