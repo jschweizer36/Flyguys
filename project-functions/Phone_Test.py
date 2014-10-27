@@ -2,7 +2,7 @@
 #Edited: 10/26/2014
 #Remark: started as a copy of Peter's TempleAnalytic_Main.py
 
-def phone_log(name,phoneLog)
+def phone_log(name,phoneLog):
     #reading in the weights
     with open("PhoneWeight.csv","r") as f:
         weights = [x.split("\n")[0].split(",") for x in f.readlines()]# read2List
@@ -13,7 +13,7 @@ def phone_log(name,phoneLog)
     phone = []
     
     for i in range(1,phoneLog.nrows):
-        if(phoneLog.cell(i,3).value) == name):
+        if(phoneLog.cell(i,3).value == name):
             phone.append(phoneLog.row(i))
     #now find phone number that appear once only and is duration less than 10mins
     occurance = {}
