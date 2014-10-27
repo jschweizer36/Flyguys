@@ -2,9 +2,6 @@
 #Edited: 10/26/2014
 #Remark: started as a copy of Peter's TempleAnalytic_Main.py
 
-import xlrd
-from Employee import Employee
-
 def phone_log(name,phoneLog)
     #reading in the weights
     with open("PhoneWeight.csv","r") as f:
@@ -14,8 +11,10 @@ def phone_log(name,phoneLog)
 
     #Store Phone Sheet Data
     phone = []
+    
     for i in range(1,phoneLog.nrows):
-        phone.append(phoneLog.row(i))
+        if(phoneLog.cell(i,3).value) == name):
+            phone.append(phoneLog.row(i))
     #now find phone number that appear once only and is duration less than 10mins
     occurance = {}
     for rows in phone:
