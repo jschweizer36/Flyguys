@@ -1,6 +1,6 @@
 '''
-The function will be used to determins the threat level of an employee based on their origin of birth                                  
-The threat level is based on the danger of the counrty                         
+The function will be used to determine the threat level of an employee based on their origin of birth                                  
+The threat level is based on the danger of the country                         
 '''
 
 # library used to change unicode to string                                     
@@ -23,11 +23,11 @@ def citizenship_score(idnumber,citizenship):
     # loop over all of the employees to find their birth country               
 
     for country in birth_country:
-        counrty = unicodedata.normalize('NFC',country)
+        country = unicodedata.normalize('NFC',country)
 
         if country == "US":   #If the country is The United States
             points = points + 1
-        elif country == "SE":   #If the country is Sweeden
+        elif country == "SE":   #If the country is Sweden
             points = points + 2
         elif country == "NP":   #If the country is Nepal
             points = points + 3
