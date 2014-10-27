@@ -1,6 +1,7 @@
-'''
-The function will be used to determins the threat level of an employee based on their origin of birth                                  
-The threat level is based on the danger of the counrty                         
+'''                                                                             
+The function will be used to determins the threat level of an employee based on\
+ their origin of birth                                                          
+The threat level is based on the danger of the counrty                          
 '''
 
 # library used to change unicode to string                                     
