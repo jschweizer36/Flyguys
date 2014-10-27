@@ -5,7 +5,7 @@
 import xlrd
 from Employee import Employee
 
-
+def phone_log(name,phoneLog):
 #reading in the weights
 with open("PhoneWeight.csv","r") as f:
     weights = [x.split("\n")[0].split(",") for x in f.readlines()]# read2List
