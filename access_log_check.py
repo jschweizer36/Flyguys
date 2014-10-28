@@ -6,15 +6,13 @@ The more they log on the higher the threat they will be
 
 import unicodedata #this is the library we will use to convert values to strings
 
-def access_log(NITD, access): #Initializing the access log function 
+def access_log(NTID, access): #Initializing the access log function 
     points = 0  #setting an initial value for points 
     count = 0 #setting an initial value for a counter
 
     for x in range (0, access.nrows-1):
-        if (access.cell(m+1,0).value) == NTID):
-            count ++
-        else:
-            return
+        if (access.cell(x+1,0).value == NTID):
+            count = count + 1
             
     if (count < 100):
         points = points + .1
@@ -25,3 +23,5 @@ def access_log(NITD, access): #Initializing the access log function
 
     return points 
         
+
+main()
