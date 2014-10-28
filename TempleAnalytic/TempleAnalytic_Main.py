@@ -165,7 +165,7 @@ if __name__ == '__main__':
         phone.append(phonecall_logs.row(i))
     Threatphone = phone_log(phone)
     phoneName = {x[0]:x[1] for x in Threatphone}
-    print phoneName   
+    #print phoneName   
     print
         
     #Creating all of our employee objects
@@ -186,7 +186,8 @@ if __name__ == '__main__':
             temp = phoneName[name]
             Temp.threat = temp
         except KeyError:
-            pass                                                     #Creating a Employee object
+            pass
+        #Creating a Employee object
         emp.append(Temp)                                                                        #Storing the object in a list of the employee objects
     
     
