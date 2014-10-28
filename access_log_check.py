@@ -17,9 +17,11 @@ def access_log(NITD, access): #Initializing the access log function
             return
             
     if (count < 100):
-        points = 1
+        points = points + .1
     elif (count <200):
-        points = 2
+        points = points + .2
     else:
-        points = 3
+        points = points + .3
+
+    return points 
         
