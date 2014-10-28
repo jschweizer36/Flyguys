@@ -17,7 +17,7 @@ def citizenship_score(idnumber,citizenship):
     # loop to create a list of the country of birth of the employee          
 
     for x in range(0,citizenship.nrows-1):
-        if (int(citizenship.cell(m+1,0).value) == idnumber):
+        if (int(citizenship.cell(x+1,0).value) == idnumber):
             birth_country.append(citizenship.cell(m+1,2).value)
 
     # loop over all of the employees to find their birth country               
