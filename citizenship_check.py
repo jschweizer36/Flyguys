@@ -26,14 +26,16 @@ def citizenship_score(idnumber,citizenship):
         country = unicodedata.normalize('NFC',country)
 
         if country == "US":   #If the country is The United States
-            points = points + 1
+            points = points + .1
         elif country == "SE":   #If the country is Sweden
-            points = points + 2
+            points = points + .2
         elif country == "NP":   #If the country is Nepal
-            points = points + 3
+            points = points + .3
         elif country == "CR":   #If the country is Costa Rica
-            points = points + 4
+            points = points + .4
         elif country == "PE":   #If the country is Peru
-            points = points + 5
+            points = points + .5
         elif country == "ER":   #If the country is Eritrea
-            points = points + 6
+            points = points + .6
+
+    return points

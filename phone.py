@@ -1,5 +1,5 @@
 #Author: Mohamed Hakim
-#Edited: 10/26/2014
+#Edited: 10/28/2014
 #Remark: started as a copy of Peter's TempleAnalytic_Main.py
 
 def phone_log(name,phoneLog):

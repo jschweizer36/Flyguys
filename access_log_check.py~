@@ -4,7 +4,7 @@ We will use their NTID to check to see how often they log on
 The more they log on the higher the threat they will be
 '''
 
-import unicodedata #the is the library we will use to convert values to strings
+import unicodedata #this is the library we will use to convert values to strings
 
 def access_log(NITD, access): #Initializing the access log function 
     points = 0  #setting an initial value for points 
@@ -13,7 +13,13 @@ def access_log(NITD, access): #Initializing the access log function
     for x in range (0, access.nrows-1):
         if (access.cell(m+1,0).value) == NTID):
             count ++
+        else:
+            return
             
-            
-    
+    if (count < 100):
+        points = 1
+    elif (count <200):
+        points = 2
+    else:
+        points = 3
         
