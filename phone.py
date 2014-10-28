@@ -30,4 +30,4 @@ def phone_log(name,phoneLog):
         if ((float(weights[str(occurance[entry][1])])+\
             float(weights[str(occurance[entry][2])]))/2)>0:
             Threats.append(occurance[entry][0])
-    print Threats
+    return Threats
