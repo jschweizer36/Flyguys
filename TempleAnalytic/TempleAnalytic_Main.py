@@ -41,12 +41,16 @@ def access_log(e, access_logs): #Initializing the access log function
         if (access_logs.cell(x+1,0).value == e.ntid):
             count=count+1
             
-    if (count < 100):
-        points = points + 1
-    elif (count <200):
-        points = points +2
+    if (count < 300):
+        points = points + .1
+    elif (count < 320):
+        points = points + .2
+    elif (count < 340):
+        points = points + .3
+    elif (count < 360):
+        points = points + .4
     else:
-        points = points + 3
+        points = points + .5
     
     return (float(points)/3) * .1
 
