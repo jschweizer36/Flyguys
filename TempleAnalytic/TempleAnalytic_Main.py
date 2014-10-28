@@ -37,7 +37,7 @@ if __name__ == '__main__':
                 break
         Temp = Employee(idnum, name, ntid)                                                      #Creating a Employee object
         emp.append(Temp)                                                                        #Storing the object in a list of the employee objects
-    
+        
     #Printing each employee object
     print str(emp[0].id) + ' ' + emp[0].name + ' ' + emp[0].ntid
     print str(emp[1].id) + ' ' + emp[1].name + ' ' + emp[1].ntid
