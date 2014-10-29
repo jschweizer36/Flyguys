@@ -1,7 +1,13 @@
 '''
 Created on Oct 23, 2014
+This file is composed of 6 functions that determine the threat level of lockheads employees 
+The functions all check different fields for example (phone call history, server access logs, and more)
+each function will parse the database given to us, and return a value of threat
+the total threat from each fucntion will be returned as a vlaue of points, and the points from each function will be averaged together giving a final rating
+the results of the threat level will be written to a csv file along with the person's name, NTID, employee ID, department, and the start they work in
+this file will be saved for records, and will create a new file each time the program runs
 
-@author
+@author Flyguys
 '''
 import xlrd
 import sys
@@ -9,6 +15,15 @@ from matplotlib import *
 from Employee import Employee
 import unicodedata
 
+'''
+This function checks the threat level of each employee based on their flight history
+What we looked for was inconsistencies in the travel history (double booked flights, flights to different areas)
+This functions input takes the employee class we generate, and the air travel tab from the database
+This checks for each occurence of the persons employee ID and sees when they have flights booked
+If they only have one flight booked for a day they do not get a threat level
+If they have multiple flights on the same day at the same time they are given a threat level
+The threat level raises based on how many times they have flights that are double booked
+'''
 #Air threat level
 def airThreat(e, air_travel):
     #Determining the threat of air travel
@@ -32,7 +47,13 @@ def airThreat(e, air_travel):
         #Print threat
         return threat
 
-
+'''
+This function checks the threat level of an employee based on their access log history
+The function input takes in the employee class, and the access log tab
+It then counts the number of times a user accesses the server based on their username, and counts for each instance
+The data is over a years worth of time, so we broke up the amount of times based on how many work days are in a year
+The points depened on how many times a certain user accesses the server within that year
+'''
 #Access Log threat level
 def access_log(e, access_logs): #Initializing the access log function 
     points = 0  #setting an initial value for points 
@@ -51,7 +72,14 @@ def access_log(e, access_logs): #Initializing the access log function
     
     return (float(points)/3) *.1
 
-
+'''
+This function checks the threat level of each employee based on their job histry (demotions, promotions, raises)
+One of the things we were told to look for were personal stressors from the work place
+This function's input is the employee class, and the job hx tab from the database
+It checks through each occurence of the employee's ID and checks the string to see what happened
+For example if the string is "Demotion for Infraction" the employee is given 0.6 points
+Where as if the string was "New Hire" they would recieve no points, and their total points are averaged and returned to the main function
+'''
 #Job History Threat Level
 def job_history_score(e,job_hx):
     # Initialization
@@ -93,6 +121,15 @@ def job_history_score(e,job_hx):
     # return the points value
     return float(points)/float(count),job_state,job_depar
 
+
+'''
+This function determines a threat level of each employee baseed upon their phone records
+The input to the funciton is 
+
+
+
+I HAVE NO IDEA HOW THIS WORKS CAN SOMEONE EXPLAIN
+'''
 #Phone log threat level
 def phone_log(phone):
     #reading in the weights
@@ -118,6 +155,13 @@ def phone_log(phone):
             Threats.append([str(occurance[entry][0]),littleThreat/float(10)])
     return Threats
 
+'''
+This function determines the threat level of an employee based on their citizenship
+We were told to analyze each employee's heritage, and if they were born in a dangeroues area they should be a threat
+This functions input is the empolyee class, and the citizenship tab from the database
+This function looks for each employee using their ID and then grabs the column that says where they were born
+Then it checks what the string says, and returns a points values based on where they employee was born
+'''
 def citizenship_score(e,citizenship):
     # Initialization                                   
     birth_country = []
