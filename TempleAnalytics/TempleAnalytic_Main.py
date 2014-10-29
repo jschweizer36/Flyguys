@@ -63,12 +63,16 @@ def access_log(e, access_logs): #Initializing the access log function
         if (access_logs.cell(x+1,0).value == e.ntid):
             count=count+1
             
-    if (count < 100):
-        points = points + 1
-    elif (count <200):
-        points = points +2
+    if (count < 300):
+        points = points + 0.1
+    elif (count < 320):
+        points = points + 0.2
+    elif (count < 340):
+        points = points + 0.3
+    elif (count < 360):
+        points = points + 0.4
     else:
-        points = points + 3
+        points = points + 0.5
     
     return (float(points)/3) *.1
 
@@ -117,7 +121,8 @@ def job_history_score(e,job_hx):
             points = points + 0
         elif reason == "Self demotion to Change Position":
             points = points + 0.2
-            
+    if count == 0:
+        count = 1
     # return the points value
     return float(points)/float(count),job_state,job_depar
 
@@ -198,7 +203,7 @@ if __name__ == '__main__':
     sys.stdout = open("Output.csv","w")
 
     #Reading in the data from the excel spreadsheet 
-    dataset = xlrd.open_workbook('Lockheed_Data_Sample.xls')
+    dataset = xlrd.open_workbook('Lockheed_Data.xls')
     
     #Storing each tab of the spreadsheet into a new list
     employee_info = dataset.sheet_by_index(0)
@@ -225,7 +230,7 @@ if __name__ == '__main__':
     name = ''
     ntid = ''
     temp = 0
-    for i in range(1,employee_info.nrows):
+    for i in range(1,1001):
         idnum = int(employee_info.cell(i,0).value)                                              #Finding Employee ID Number and storing it in idnum
         name = employee_info.cell(i,7).value + ',' + employee_info.cell(i,5).value              #Finding Employee Name and storing it in name
         for j in range(1,job_hx.nrows):
