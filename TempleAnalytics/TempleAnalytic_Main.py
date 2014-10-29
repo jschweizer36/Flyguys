@@ -93,7 +93,8 @@ def job_history_score(e,job_hx):
             points = points + 0
         elif reason == "Self demotion to Change Position":
             points = points + 0.2
-            
+    if count == 0:
+        count = 1
     # return the points value
     return float(points)/float(count),job_state,job_depar
 
