@@ -1,0 +1,8 @@
+{State: 'Accounting', freq:{low:114, mid:147, high:1}}
+{State: 'Business Development', freq:{low:140, mid:134, high:4}}
+{State: 'Corporate', freq:{low:112, mid:158, high:1}}
+{State: 'Engineering', freq:{low:120, mid:145, high:1}}
+{State: 'IT', freq:{low:123, mid:158, high:0}}
+{State: 'Marketing', freq:{low:112, mid:166, high:4}}
+{State: 'Sales', freq:{low:114, mid:139, high:5}}
+{State: 'Services', freq:{low:115, mid:185, high:3}}
