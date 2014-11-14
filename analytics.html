@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<h1>Company Wide Threat Levels</h1>
+<h1><p id="get">Company Wide Threat Levels</p></h1>
 <meta charset="utf-8">
 <style>
 body{
@@ -153,12 +153,20 @@ function dashboard(id, fData){
             .each(function(d) { this._current = d; })
             .style("fill", function(d) { return segColor(d.data.type); })
             .on("mouseover",mouseover).on("mouseout",mouseout);
+          ("").click(lick());
 
         // create function to update pie-chart. This will be used by histogram.
         pC.update = function(nD){
             piesvg.selectAll("path").data(pie(nD)).transition().duration(500)
                 .attrTween("d", arcTween);
         }        
+
+        //click function
+        function lick(){
+           document.getElementById("get").innerHTML="we did it";
+        
+        }
+ 
         // Utility function to be called on mouseover a pie slice.
         function mouseover(d){
             // call the update function of histogram with new data.
