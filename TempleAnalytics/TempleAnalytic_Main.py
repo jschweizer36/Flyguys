@@ -7,7 +7,7 @@ the total threat from each fucntion will be returned as a vlaue of points, and t
 the results of the threat level will be written to a csv file along with the person's name, NTID, employee ID, department, and the start they work in
 this file will be saved for records, and will create a new file each time the program runs
 
-@author Mohammed Hakim, Pete Mollica, Joseph Schweizer, Joseph Throne
+@author Flyguys
 '''
 import xlrd
 import sys
@@ -133,7 +133,11 @@ The input to the funciton is
 
 
 
-I HAVE NO IDEA HOW THIS WORKS CAN SOMEONE EXPLAIN
+This function assumes that unique calls which take less than 10 minutes are possibly an insider threat
+This assumption is due to the possibility that if a new customer calls in most likely they will need some clarifications
+For these entires the threat level is the average of the threat level shown is an .csv file of the source and the destination
+only if the average value is larger than 0 that entry is returned in 
+a list of lists Threat which includes the caller name and threat level
 '''
 #Phone log threat level
 def phone_log(phone):
@@ -220,6 +224,9 @@ if __name__ == '__main__':
         phone.append(phonecall_logs.row(i))
     Threatphone = phone_log(phone)
     phoneName = {x[0]:x[1] for x in Threatphone}
+    #Debugging prints
+    #print phoneName   
+    #print
         
     #Creating all of our employee objects
     emp=[]
@@ -228,20 +235,31 @@ if __name__ == '__main__':
     ntid = ''
     temp = 0
     for i in range(1,1001):
-        idnum = int(employee_info.cell(i,0).value)                                 #Finding Employee ID Number and storing it in idnum
-        name = employee_info.cell(i,7).value + ',' + employee_info.cell(i,5).value #Finding Employee Name and storing it in name
+        idnum = int(employee_info.cell(i,0).value)                                              #Finding Employee ID Number and storing it in idnum
+        name = employee_info.cell(i,7).value + ',' + employee_info.cell(i,5).value              #Finding Employee Name and storing it in name
         for j in range(1,job_hx.nrows):
             if (int(job_hx.cell(j,0).value) == idnum):
-                ntid = job_hx.cell(j,19).value                                      #Finding NTID and storing it in ntid
+                ntid = job_hx.cell(j,19).value                                                  #Finding NTID and storing it in ntid
                 break
         Temp = Employee(idnum, name, ntid) 
         try:
             temp = phoneName[name]
             Temp.threat = temp
         except KeyError:
-            pass                                                                     #Creating a Employee object
-        emp.append(Temp)                                                             #Storing the object in a list of the employee objects
+            pass                                                     #Creating a Employee object
+        emp.append(Temp)                                                                        #Storing the object in a list of the employee objects
     
+    
+    #Printing each employee object for debugging 
+    ''' 
+    print str(emp[0].id) + ' ' + emp[0].name + ' ' + emp[0].ntid + ' ' + str(emp[0].threat)
+    print str(emp[1].id) + ' ' + emp[1].name + ' ' + emp[1].ntid + ' ' + str(emp[1].threat)
+    print str(emp[2].id) + ' ' + emp[2].name + ' ' + emp[2].ntid + ' ' + str(emp[2].threat)
+    print str(emp[3].id) + ' ' + emp[3].name + ' ' + emp[3].ntid + ' ' + str(emp[3].threat)
+    print 
+    print job_hx.cell(1,16).value
+    print job_hx.cell(1,8).value
+    '''
     print 'id,name,ntid,threat,state,department'
       
     for i in range(0,len(emp)):
@@ -252,7 +270,15 @@ if __name__ == '__main__':
         Threataccess = access_log(emp[i], access_logs)
         Threatjobhx,state,dept = job_history_score(emp[i], job_hx)
         ThreatCitizen = citizenship_score(emp[i],citzenship)
-        t = .2*Threatphone + .35*Threatair + .05*Threataccess + .3*Threatjobhx + .1 *ThreatCitizen   #Scaled threats
+        ''' debugging prints
+        print "Travel threat = " + str(Threatair)
+        print "Access log threat level = " + str(Threataccess)
+        print "Job History threat level = " + str(Threatjobhx)
+        print "Citizenship threat level = " + str(ThreatCitizen)
+        print "Department is: "   + emp[i].department
+        print "State is: " + emp[i].state
+        '''
+        Threat = .2*Threatphone + .35*Threatair + .05*Threataccess + .3*Threatjobhx + .1 *ThreatCitizen   #Scaled threats
         emp[i].threat = Threat
         #print Threat
         print '"'+str(emp[i].id)+'"'+ ',' +'"'+emp[i].name+'"'+ ',' +'"'+ emp[i].ntid+'"'+ ',' +'"'+str(emp[i].threat)+'"'+ ',' +'"'+dept+'"'+ ',' +'"'+state+'"'+ ','
