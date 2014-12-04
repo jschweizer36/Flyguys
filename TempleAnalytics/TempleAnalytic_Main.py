@@ -1,24 +1,26 @@
 '''
 Created on Oct 23, 2014
-This file is composed of 6 functions that determine the threat level of lockheads employees 
-The functions all check different fields for example (phone call history, server access logs, and more)
-each function will parse the database given to us, and return a value of threat
-the total threat from each fucntion will be returned as a vlaue of points, and the points from each function will be averaged together giving a final rating
-the results of the threat level will be written to a csv file along with the person's name, NTID, employee ID, department, and the start they work in
-this file will be saved for records, and will create a new file each time the program runs
+This file is composed of functions that determine the threat level of lockheads employees 
+The functions all check different fields for example phone call history, server access logs, and more.
+Each function will parse the database given to us, and return a value of threat.
+The total threat from each function will be returned as a value of points, and the points from each function will be averaged together giving a final threat level.
+The results of the threat level will be written to a csv file along with the person's name, NTID, employee ID, department, and the state they work in.
+This file will be saved and used to present the data on our website.
+Each time the function runs it updates the csv file with any new information for the employees.
 
 @author Mohammed Hakim, Pete Mollica, Joseph Schweizer, Joseph Throne
+
+Last edit: December 4, 2014
 '''
 import xlrd
 import sys
-from matplotlib import *
 from Employee import Employee
 import unicodedata
 
 '''
 This function checks the threat level of each employee based on their flight history
 What we looked for was inconsistencies in the travel history (double booked flights, flights to different areas)
-This functions input takes the employee class we generate, and the air travel tab from the database
+This functions takes as inputs the employee class we generate, and the air travel information from the database
 This checks for each occurence of the persons employee ID and sees when they have flights booked
 If they only have one flight booked for a day they do not get a threat level
 If they have multiple flights on the same day at the same time they are given a threat level
@@ -33,26 +35,22 @@ def airThreat(e, air_travel):
     for i in range(0, air_travel.nrows):
         if (air_travel.cell(i,1).value==e.name):
             count=count+1
-            #print count
-            if i+1 >= air_travel.nrows:                                         #Used to avoid an index error
+            if i+1 >= air_travel.nrows:   #Used to avoid an index error
                 break
             if (air_travel.cell(i,5).value == air_travel.cell(i+1,5).value):
                 threatCount=threatCount+1
-                #print threatCount
-                
     if count ==0:
         return 0
     else:
         threat=float(threatCount)/float(count)
-        #Print threat
         return threat
 
 '''
 This function checks the threat level of an employee based on their access log history
-The function input takes in the employee class, and the access log tab
+The function input takes in the employee class, and the access log information
 It then counts the number of times a user accesses the server based on their username, and counts for each instance
 The data is over a years worth of time, so we broke up the amount of times based on how many work days are in a year
-The points depened on how many times a certain user accesses the server within that year
+The points depend on how many times a certain user accesses the server within that year
 '''
 #Access Log threat level
 def access_log(e, access_logs): #Initializing the access log function 
@@ -77,12 +75,12 @@ def access_log(e, access_logs): #Initializing the access log function
     return (float(points)/3) *.1
 
 '''
-This function checks the threat level of each employee based on their job histry (demotions, promotions, raises)
-One of the things we were told to look for were personal stressors from the work place
-This function's input is the employee class, and the job hx tab from the database
-It checks through each occurence of the employee's ID and checks the string to see what happened
-For example if the string is "Demotion for Infraction" the employee is given 0.6 points
-Where as if the string was "New Hire" they would recieve no points, and their total points are averaged and returned to the main function
+This function checks the threat level of each employee based on their job history (demotions, promotions, raises)
+One of the things our research showed to look for were personal stressors from the work place
+This function's input is the employee class, and the job hx information from the database.
+It checks through each occurrence of the employee's ID and sees what happened to the employee job status.
+For example if the string is "Demotion for Infraction" the employee is given 0.6 points,
+where as if the string was "New Hire" they would receive no points. Then, their total points are averaged and returned to the main function
 '''
 #Job History Threat Level
 def job_history_score(e,job_hx):
@@ -130,9 +128,8 @@ def job_history_score(e,job_hx):
 '''
 This function assumes that unique calls which take less than 10 minutes are possibly an insider threat
 This assumption is due to the possibility that if a new customer calls in most likely they will need some clarifications
-For these entires the threat level is the average of the threat level shown is an .csv file of the source and the destination
-only if the average value is larger than 0 that entry is returned in 
-a list of lists Threat which includes the caller name and threat level
+Once the unique phone calls are found, the function figure out which employee made or answered that phone call.
+These employee are then given a certain threat level based on the number of unique calls they have made.
 '''
 #Phone log threat level
 def phone_log(phone):
@@ -150,7 +147,7 @@ def phone_log(phone):
                 occurance.pop(rows[2].value)
             except KeyError:
                 occurance[rows[2].value] = [rows[3].value,rows[6].value,rows[7].value]
-    #for these entries weight their threat based on location
+    #for these entries a weight is given for their threat based on location
     Threats = []
     for entry in occurance:
         littleThreat= (float(weights[str(occurance[entry][1])])+\
@@ -160,11 +157,12 @@ def phone_log(phone):
     return Threats
 
 '''
-This function determines the threat level of an employee based on their citizenship
-We were told to analyze each employee's heritage, and if they were born in a dangeroues area they should be a threat
-This functions input is the empolyee class, and the citizenship tab from the database
-This function looks for each employee using their ID and then grabs the column that says where they were born
-Then it checks what the string says, and returns a points values based on where they employee was born
+This function determines the threat level of an employee based on their citizenship.
+Our research showed that we should analyze each employee's heritage, and 
+if they were born in a certain area they should be assigned a threat level.
+This function's input is the empolyee class, and the citizenship information from the database.
+This function looks for each employee ID and then for the information about where they were born and raised.
+Based on the location the employee is assigned a certain threat level.
 '''
 def citizenship_score(e,citizenship):
     # Initialization                                   
@@ -197,6 +195,14 @@ def citizenship_score(e,citizenship):
 
     return float(points)
 
+'''
+The following function is our main function. This function makes a a list of employee objects for all of the employees.
+The employee class assigns a name, id number, and NTID.
+Once all of the employee objects are made, the function determines an overall threat level for each employee.
+The function then creates a csv file containing the id, name, ntid, threat, state and department for each employee.
+This csv file is used in our javascript code to present the data graphically on our webpage.
+'''
+
 if __name__ == '__main__':
     OrigOut = sys.stdout
     sys.stdout = open("Output.csv","w")
@@ -227,26 +233,24 @@ if __name__ == '__main__':
     ntid = ''
     temp = 0
     for i in range(1,1001):
-        idnum = int(employee_info.cell(i,0).value)                                  #Finding Employee ID Number and storing it in idnum
+        idnum = int(employee_info.cell(i,0).value)     #Finding Employee ID Number and storing it in idnum
         name = employee_info.cell(i,7).value + ',' + employee_info.cell(i,5).value  #Finding Employee Name and storing it in name
         for j in range(1,job_hx.nrows):
             if (int(job_hx.cell(j,0).value) == idnum):
-                ntid = job_hx.cell(j,19).value                                      #Finding NTID and storing it in ntid
+                ntid = job_hx.cell(j,19).value     #Finding NTID and storing it in ntid
                 break
         Temp = Employee(idnum, name, ntid) 
         try:
             temp = phoneName[name]
             Temp.threat = temp
         except KeyError:
-            pass                                                                     #Creating a Employee object
-        emp.append(Temp)                                                             #Storing the object in a list of the employee objects
+            pass                                   #Creating a Employee object
+        emp.append(Temp)                           #Storing the object in a list of the employee objects
     
     
     print 'id,name,ntid,threat,state,department'
       
     for i in range(0,len(emp)):
-        #emp[i].state = job_hx.cell(i+1,16).value
-        #emp[i].department = job_hx.cell(i+1,8).value
         Threatphone = emp[i].threat
         Threatair = airThreat(emp[i], air_travel)
         Threataccess = access_log(emp[i], access_logs)
@@ -254,7 +258,6 @@ if __name__ == '__main__':
         ThreatCitizen = citizenship_score(emp[i],citzenship)
         Threat = .2*Threatphone + .35*Threatair + .05*Threataccess + .3*Threatjobhx + .1 *ThreatCitizen   #Scaled threats
         emp[i].threat = Threat
-        #print Threat
         print '"'+str(emp[i].id)+'"'+ ',' +'"'+emp[i].name+'"'+ ',' +'"'+ emp[i].ntid+'"'+ ',' +'"'+str(emp[i].threat)+'"'+ ',' +'"'+dept+'"'+ ',' +'"'+state+'"'+ ','
     
     sys.stdout = OrigOut
