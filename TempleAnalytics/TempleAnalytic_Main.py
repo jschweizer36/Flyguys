@@ -154,6 +154,7 @@ def phone_log(phone):
             float(weights[str(occurance[entry][2])]))/2
         if (littleThreat)>0:
             Threats.append([str(occurance[entry][0]),littleThreat/float(10)])
+     
     return Threats
 
 '''
